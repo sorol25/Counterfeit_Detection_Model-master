@@ -5,16 +5,31 @@ import torch.nn as nn
 import torch.nn.functional as F
 from efficientnet_pytorch import EfficientNet
 
+
 class CapsuleVerificationModel(nn.Module):
     def __init__(self, embedding_size=512):
         super(CapsuleVerificationModel, self).__init__()
-        self.backbone = EfficientNet.from_pretrained('efficientnet-b3')
-        self.backbone = nn.Sequential(*list(self.backbone.children())[:-1])
+
+        # Load pretrained EfficientNet backbone
+        backbone = EfficientNet.from_pretrained('efficientnet-b3')
+
+        # Remove classification head
+        self.backbone = nn.Sequential(*list(backbone.children())[:-1])
+
+        # Fully connected layer for embedding projection
         self.fc = nn.Linear(self.backbone[-1].in_features, embedding_size)
-        
+
     def forward(self, x):
+        # Feature extraction
         x = self.backbone(x)
+
+        # Flatten features
         x = x.view(x.size(0), -1)
+
+        # Embedding projection
         x = self.fc(x)
-        x = F.normalize(x, p=2, dim=1)  # Normalize embeddings
+
+        # L2 normalization for verification embeddings
+        x = F.normalize(x, p=2, dim=1)
+
         return x
