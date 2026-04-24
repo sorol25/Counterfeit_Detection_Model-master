@@ -1,166 +1,210 @@
-# Capsule Counterfeit Detection using YOLOv8
+# 🧠 Capsule Counterfeit Detection using YOLOv8
 
-This project aims to detect and verify counterfeit medicinal capsules using a deep learning approach. Built on the YOLOv8 object detection framework, the system identifies whether a capsule is **genuine** or **counterfeit** based on visual characteristics.
+A deep learning-based computer vision system for detecting and classifying **genuine vs counterfeit medicinal capsules** using state-of-the-art object detection (YOLOv8).
+
+This project is designed for **real-world pharmaceutical authentication scenarios**, enabling automated visual verification of capsule authenticity across multiple brands.
+
+---
+
+## 🚀 Project Highlights
+
+* 🔍 Multi-class capsule detection (8 classes: authentic + counterfeit)
+* ⚡ Real-time capable using YOLOv8 lightweight models
+* 🧠 Trained on curated Roboflow dataset
+* 📦 Modular and production-ready codebase
+* 🔁 Easily extendable for new brands and capsules
+* 📊 Evaluation pipeline included
 
 ---
 
 ## 📁 Project Structure
+
 ```
 capsule-counterfeit-detection/
-├── .git/
-├── datasets/
-├── models/
+│
+├── datasets/                  # Training and validation datasets
+├── models/                    # Trained model weights
 │   ├── counterfeit_capsule_model/
 │   └── verification_model/
-├── results/
-├── runs/
-├── src/
+│
+├── runs/                      # YOLO training outputs (logs, metrics)
+├── results/                   # Evaluation results
+│
+├── src/                       # Core source code
 │   ├── train.py
 │   ├── train_verification.py
 │   ├── evaluate.py
 │   ├── evaluate_verification.py
 │   ├── preprocess.py
 │   └── preprocess_verification.py
-├── test/
-├── utils/
+│
+├── test/                      # Test scripts & inference samples
+├── utils/                     # Helper utilities
+│
 ├── verification_dataset/
-│   ├── authentic_BrandW/
-│   ├── authentic_BrandX/
-│   ├── authentic_BrandY/
-│   ├── authentic_BrandZ/
-│   ├── counterfeit_BrandW/
-│   ├── counterfeit_BrandX/
-│   ├── counterfeit_BrandY/
-│   ├── counterfeit_BrandZ/
-│   └── verification_pairs.csv
-│
 ├── verification_dataset_test/
-│   ├── authentic_BrandW/
-│   ├── authentic_BrandX/
-│   ├── authentic_BrandY/
-│   ├── authentic_BrandZ/
-│   ├── counterfeit_BrandW/
-│   ├── counterfeit_BrandX/
-│   ├── counterfeit_BrandY/
-│   ├── counterfeit_BrandZ/
-│   └── verification_pairs.csv
 │
-├── .gitignore
-├── main.py
-├── README.md
+├── main.py                    # Inference entry point
 ├── requirements.txt
-├── yolov8m.pt
-└── yolov10n.pt
-
-
+├── yolov8m.pt                 # Pretrained YOLOv8 model
+├── yolov10n.pt                # Experimental model
+└── README.md
 ```
 
 ---
 
 ## 🧠 Model Overview
 
-- **Type**: Object Detection / Verification
-- **Framework**: [Ultralytics YOLOv8](https://github.com/ultralytics/ultralytics)
-- **Input**: RGB images of medicinal capsules
-- **Output**: Bounding boxes with class labels:
-  - `genuine_capsule`
-  - `counterfeit_capsule`
+* **Architecture**: YOLOv8 (Ultralytics)
+* **Task Type**: Object Detection + Multi-class Classification
+* **Input**: RGB images of medicinal capsules
+* **Output**: Bounding boxes with class labels
 
-## 🧠 Model Overview
+### 🎯 Detected Classes (8 Total)
 
-- **Model Type**: Object Detection & Multi-class Classification
-- **Framework**: [Ultralytics YOLOv8](https://github.com/ultralytics/ultralytics)
-- **Input**: Images of medicinal capsules
-- **Output**: Bounding boxes with one of 8 class labels
+* authentic_BrandW
+* authentic_BrandX
+* authentic_BrandY
+* authentic_BrandZ
+* counterfeit_BrandW
+* counterfeit_BrandX
+* counterfeit_BrandY
+* counterfeit_BrandZ
 
 ---
 
-## 🧾 Dataset Overview
+## 📊 Dataset Information
 
-- **Format**: YOLOv8 format (images + `.txt` labels)
-- **Source**: [Roboflow](https://universe.roboflow.com/medetect/medetect-9kphx/dataset/11)
-- **License**: CC BY 4.0
+* **Format**: YOLOv8 annotation format
+* **Source**: Roboflow Universe
+* **Dataset Link**: [https://universe.roboflow.com/medetect/medetect-9kphx/dataset/11](https://universe.roboflow.com/medetect/medetect-9kphx/dataset/11)
+* **License**: CC BY 4.0
 
-**Classes (Total: 8):**
-0: authentic_BrandW
-1: authentic_BrandX
-2: authentic_BrandY
-3: authentic_BrandZ
-4: counterfeit_BrandW
-5: counterfeit_BrandX
-6: counterfeit_BrandY
-7: counterfeit_BrandZ
+---
 
-**Sample `data.yaml`:**
+## ⚙️ Configuration (`data.yaml`)
+
 ```yaml
 train: ../train/images
 val: ../valid/images
 test: ../test/images
 
 nc: 8
-names: ['authentic_BrandW', 'authentic_BrandX', 'authentic_BrandY', 'authentic_BrandZ',
-        'counterfeit_BrandW', 'counterfeit_BrandX', 'counterfeit_BrandY', 'counterfeit_BrandZ']
-
-roboflow:
-  workspace: medetect
-  project: medetect-9kphx
-  version: 11
-  license: CC BY 4.0
-  url: https://universe.roboflow.com/medetect/medetect-9kphx/dataset/11
+names: [
+  'authentic_BrandW', 'authentic_BrandX',
+  'authentic_BrandY', 'authentic_BrandZ',
+  'counterfeit_BrandW', 'counterfeit_BrandX',
+  'counterfeit_BrandY', 'counterfeit_BrandZ'
+]
 ```
 
+---
 
-🚀 How to Run
+## 🛠️ Installation
 
-©️ 0. Clone Project
-```
-git clone https://github.com/IamSadik/Counterfeit_Detection_Model.git
+### 1️⃣ Clone Repository
 
+```bash
+git clone https://github.com/sorol25/Counterfeit_Detection_Model-master.git
+cd Counterfeit_Detection_Model-master
 ```
-✅ 1. Install Dependencies
+
+### 2️⃣ Create Virtual Environment (Recommended)
+
+```bash
+python -m venv venv
+source venv/bin/activate   # Mac/Linux
+venv\Scripts\activate      # Windows
 ```
+
+### 3️⃣ Install Dependencies
+
+```bash
 pip install -r requirements.txt
+```
 
-```
-⚙️ 2. Train the Model
-```
+---
+
+## 🚀 Usage
+
+### 🧠 Train Model
+
+```bash
 python src/train.py
+```
 
-```
-📊 3. Evaluate the Model
-```
+### 📊 Evaluate Model
+
+```bash
 python src/evaluate.py
+```
 
+### 🔍 Run Inference
+
+```bash
+python main.py
 ```
 
 ---
-🔍 Features
 
-✅ Multi-Class Detection – Detects 8 distinct capsule classes (authentic + counterfeit across 4 brands)
+## 📈 Features
 
-⚡ Lightweight Architecture – Powered by YOLOv8n/s for fast inference and low-latency use cases
-
-📦 Production-Ready – Trained on a clean, curated Roboflow dataset
-
-🚀 Real-Time Capable – Optimized for live verification scenarios
-
-🔁 Easily Extendable – Fine-tune or scale with minimal setup
+* ✅ Multi-brand counterfeit detection system
+* ⚡ Optimized YOLOv8 inference pipeline
+* 📦 Clean modular architecture
+* 🔁 Supports retraining and fine-tuning
+* 🧪 Evaluation pipeline for performance tracking
+* 🚀 Ready for deployment integration
 
 ---
-🛠️ Future Enhancements
 
-🔁 Integrate Triplet-Loss Verification Models (e.g., Siamese Network) for one-shot/few-shot learning
+## 🧪 Future Improvements
 
-🧠 Add Grad-CAM / Heatmaps for model interpretability and capsule focus visualization
-
-🌐 Deploy as a Flask/Streamlit Web App for interactive demos and real-world testing
-
-📈 Expand the dataset to include more capsule brands and variations
+* 🧠 Siamese / Triplet Loss-based verification model (few-shot learning)
+* 🔥 Grad-CAM visualization for explainability
+* 🌐 Web deployment using Flask / FastAPI / Streamlit
+* 📱 Mobile deployment (ONNX / TensorRT optimization)
+* 📊 Expanded dataset with more pharmaceutical brands
+* 🛰️ Real-time camera integration for live verification
 
 ---
-🤝 Contributing
 
-We welcome contributions!
-If you're planning major changes, please open an issue first to discuss the scope and approach.
-Pull requests for improvements, bug fixes, or new features are always appreciated!
+## 🤝 Contributing
+
+Contributions are welcome and appreciated.
+
+If you would like to contribute:
+
+1. Fork the repository
+2. Create a feature branch
+3. Commit your changes
+4. Open a Pull Request
+
+For major changes, please open an issue first to discuss the approach.
+
+---
+
+## 📄 License
+
+This project is licensed under the **MIT License** (or update if different).
+
+---
+
+## 👨‍💻 Author
+
+**Yeamine Alam Sorol**
+
+* GitHub: [@sorol25](https://github.com/sorol25)
+* LinkedIn: www.linkedin.com/in/yeamine-alam-sorol-746831347
+
+---
+
+## ⭐ Acknowledgements
+
+* [Ultralytics YOLOv8](https://github.com/ultralytics/ultralytics)
+* Roboflow Dataset Platform
+* Open-source computer vision community
+
+---
+
 
